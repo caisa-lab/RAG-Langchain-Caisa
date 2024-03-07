@@ -1,8 +1,15 @@
-from langchain_community.document_loaders import DirectoryLoader
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain.vectorstores.chroma import Chroma
+
+from langchain_community.document_loaders import JSONLoader
+
+import json
+from pathlib import Path
+from pprint import pprint
+
 from creds import creds
 
 import os
@@ -14,19 +21,31 @@ CHROMA_PATH = "chroma"
 DATA_PATH = "data/books"
 
 
+
 def main():
     generate_data_store()
 
 
 def generate_data_store():
-    documents = load_documents()
+    #documents = load_documents()
+    documents = load_json_documents()
     chunks = split_text(documents)
     save_to_chroma(chunks)
 
 
+def load_json_documents():
+    file_path= DATA_PATH + '/reviews.json'
+    print("file Path: ", file_path)
+    #data = json.loads(Path(file_path).read_text())
+    loader = DirectoryLoader(DATA_PATH, glob='**/*.json', show_progress=True, loader_cls=TextLoader)
+    documents = loader.load()
+    print("data: ",documents)
+    return documents
+
 def load_documents():
     loader = DirectoryLoader(DATA_PATH, glob="*.md")
     documents = loader.load()
+    print(documents)
     return documents
 
 

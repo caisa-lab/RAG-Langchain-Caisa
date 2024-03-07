@@ -2,8 +2,9 @@ import argparse
 from dataclasses import dataclass
 from langchain_community.vectorstores import Chroma
 from langchain_openai.embeddings import OpenAIEmbeddings
-from langchain_community.chat_models import ChatOpenAI
+#from langchain_community.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
 from creds import creds
 
 import os
@@ -47,7 +48,7 @@ def main():
     print("********* End Prompt *********")
     model = ChatOpenAI()
     print("****model****")
-    response_text = model.predict(prompt)
+    response_text = model.invoke(prompt)
 
     sources = [doc.metadata.get("source", None) for doc, _score in results]
     formatted_response = f"Response: {response_text}\nSources: {sources}"
