@@ -54,6 +54,7 @@ def main():
     formatted_response = f"Response: {response_text}\nSources: {sources}"
     print("****response****")
     print(formatted_response)
+    print("****end response****")
 
 
 if __name__ == "__main__":
